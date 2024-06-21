@@ -91,3 +91,8 @@ const darken = document.querySelector(".second");
 darken.addEventListener("click", function(){
     createGrid();
 })
+
+const erase = document.querySelector(".erase");
+erase.addEventListener("click", function(){
+    resetGrids();
+})
