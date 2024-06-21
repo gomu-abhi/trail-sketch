@@ -62,8 +62,17 @@ h1{
     display: flex;
     align-self: center;
     flex-wrap:wrap;
-    width: 500px;
-    height: 500px;
+    width: 600px;
+    height: 600px;
     border: 5px solid black;
     background-color: white;
+}
+
+.in{
+    width: 25px;
+}
+
+.size{
+    color: black;
+    font-size: large;
 }

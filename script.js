@@ -1,5 +1,16 @@
 const num_grids = 32;
+let newflag = 0;
 const cont = document.querySelector(".container");
+
+const dark = function(e) 
+{
+    let opa = Number(e.target.style.opacity);
+    e.target.style.opacity = `${opa+0.1}`;
+}
+
+const colorize = function(e){
+    e.target.style.backgroundColor = randColor();
+}
 
 function randColor(){
     const arr = ["pink", "lightblue", "indigo", "lightgreen", "yellow", "orange", "red"];
@@ -7,22 +18,31 @@ function randColor(){
     return arr[y];
 }
 
-function createGrids(x){
+function createGrids(){
+    const temp = document.querySelectorAll(".parts");
+    const tem = Array.from(temp);
+    newflag = 1;
+    tem.forEach(element => {
+        element.removeEventListener("mouseenter", dark);
+        element.style.backgroundColor = "white";
+        element.style.opacity = "1";
+        element.addEventListener("mouseenter", colorize);
+    });
+}
+
+function resetGrids(){
     const temp = document.querySelectorAll(".parts");
     const tem = Array.from(temp);
     tem.forEach(element => {
-        cont.removeChild(element); 
-    });
-    for(let i = 0; i<x*x; i++){
-        const part = document.createElement("div");
-        part.style.cssText = `height: ${500/x}px; width: ${500/x}px;`;
-        part.classList.add("parts");
-        part.style.backgroundColor = "white";
-        part.addEventListener("mouseenter", function(e){
-            e.target.style.backgroundColor = randColor();
-        })
-        cont.appendChild(part);
+        if(newflag === 2){
+        element.style.backgroundColor = "black";
+        element.style.opacity = "0"
     }
+        else if(newflag === 1){
+            element.style.backgroundColor = "white";
+        }
+
+    });
 }
 
 function Grids(x){
@@ -31,47 +51,43 @@ function Grids(x){
     tem.forEach(element => {
         cont.removeChild(element);
     });
+    if(x > 64) x = 64;
     for(let i = 0; i<x*x; i++){
         const part = document.createElement("div");
-        part.style.cssText = `height: ${500/x}px; width: ${500/x}px;`;
+        part.style.cssText = `height: ${600/x}px; width: ${600/x}px;`;
         part.classList.add("parts");
         part.style.backgroundColor = "white";
         cont.appendChild(part);
     }
 }
 
-function createGrid(x){
+function createGrid(){
     const temp = document.querySelectorAll(".parts");
+    newflag = 2;
     const tem = Array.from(temp);
     tem.forEach(element => {
-        cont.removeChild(element);
+        element.removeEventListener("mouseenter", colorize);
+        element.style.backgroundColor = "black";
+        element.style.opacity = 0;
+        element.addEventListener("mouseenter", dark);
     });
-    for(let i = 0; i<x*x; i++){
-        const part = document.createElement("div");
-        part.style.cssText = `height: ${500/x}px; width: ${500/x}px;`;
-        part.style.backgroundColor = "black";
-        part.classList.add("parts");
-        part.style.opacity = 0;
-        part.classList.add("parts");
-        part.addEventListener("mouseenter", function(e){
-            let opa = Number(e.target.style.opacity);
-            e.target.style.opacity = `${opa+0.1}`;
-        })
-        cont.appendChild(part);
-    }
 }
+
+Grids(num_grids);
+
+const input = document.querySelector(".in");
+let value = +input.value;
+input.addEventListener("change", function(e){
+    Grids(+e.target.value);
+})
+
 
 const rainbow = document.querySelector(".first");
 rainbow.addEventListener("click", function(){
-    createGrids(num_grids);
+    createGrids();
 })
 
 const darken = document.querySelector(".second");
 darken.addEventListener("click", function(){
-    createGrid(num_grids);
-})
-
-const erase = document.querySelector(".erase");
-erase.addEventListener("click", function(){
-    Grids(num_grids);
+    createGrid();
 })
